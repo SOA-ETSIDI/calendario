@@ -1,0 +1,21 @@
+\documentclass{article}
+
+\usepackage[spanish]{babel}
+\usepackage{lipsum}
+\usepackage[spanish]{translator}
+\usepackage{tikz}
+\usetikzlibrary{calendar,positioning}
+
+\newcommand{\monyear}[2]{
+\calendar[dates = #2-#1-01 to #2-#1-last] 
+if (Sunday,Saturday) [black!50]
+\holidays;
+}
+
+
+\tikzstyle{fiesta}=[text=red!90!white]
+\tikzstyle{especial}=[text=blue!90!white]
+\tikzstyle{lectivo}=[text=black]
+\tikzstyle{examen}=[text=brown!90!white]
+\tikzstyle{matricula}=[text=yellow!90!white]
+\tikzstyle{AA}=[text=green!90!black]
