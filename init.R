@@ -2,6 +2,7 @@ library(data.table)
 
 source('../misc/defs.R')
 source('../misc/funciones.R')
+source('csv2pdf.R')
 
 leeCalendario <- function()
 {
