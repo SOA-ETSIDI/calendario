@@ -1,15 +1,15 @@
 preamble <- paste(readLines('preambleCal.tex'), collapse = "\n")
 document <- paste(readLines('documentCal.tex'), collapse = "\n")
 
+isOneDay <- function(inicio, final)
+{
+    (is.na(final) | inicio == final)
+}
+
 event <- function(descripcion, inicio, final = NA)
 {
     inicio <- as.Date(inicio)
     final <- as.Date(final)
-
-    isOneDay <- function(inicio, final)
-    {
-        (is.na(final) | inicio == final)
-    }
 
     dm <- function(x) format(x, "%e de %B")
     
@@ -23,11 +23,12 @@ event <- function(descripcion, inicio, final = NA)
 calPDF <- function(cal, nombre = "ETSIDI_2016_2017", tipo = "Grado",
                    dest = tempdir())
 {
+    cal <- as.data.table(cal)
     ## Filtro solo grado
     cal <- cal[Tipo %in% c("ETSIDI", tipo)]
     
     diasHeader <- "\\newcommand{\\calETSIDI}[0]{"
-    diasEnd <- ";}\n"
+    diasEnd <- "}\n"
 
     S1Header <- "\\newcommand{\\primerSemestre}{\n\\begin{itemize}\n"
     S1End <- "\n\\end{itemize}}\n"
@@ -57,25 +58,11 @@ calPDF <- function(cal, nombre = "ETSIDI_2016_2017", tipo = "Grado",
     }
 
     ## Eventos de 1 sólo día
-    oneDay <- cal[is.na(Final) & !is.na(Formato),
-                  .(Descripcion,
-                    Dia,
-                    Lectivo,
-                    Formato,
-                    Tipo)]
+    oneTex <- cal[isOneDay(Dia, Final),
+                  dayTex(Dia, Formato)]
     ## Eventos que ocupan un período.
-    seqDays <- cal[!is.na(Final) & !is.na(Formato),
-                   .(Descripcion,
-                     Inicio = Dia,
-                     Final,
-                     Lectivo,
-                     Formato,
-                     Tipo)
-                   ]
-
-    oneTex <- oneDay[, dayTex(Dia, Formato)]
-
-    seqTex <- seqDays[, seqTex(Inicio, Final, Formato)]
+    seqTex <- cal[!isOneDay(Dia, Final),
+                  seqTex(Dia, Final, Formato)]
 
     S1Tex <- paste(S1Header,
                    paste(S1[,

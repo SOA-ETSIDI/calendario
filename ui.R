@@ -2,7 +2,8 @@ library(rhandsontable)
 library(shiny)
 library(shinyjs)
 
-##source('csv2tt.R')
+source('init.R')
+addResourcePath("pdf", tempdir())
 
 
 logoUPM <- "http://www.upm.es/sfs/Rectorado/Gabinete%20del%20Rector/Logos/UPM/EscPolitecnica/EscUpmPolit_p.gif"
@@ -32,16 +33,9 @@ editor <- div(id = 'editor',
                          )
               ))
 
-pdfUI <- div(id = 'pdfUI',
-             fluidRow(column(12,
-                             actionButton("refresh",
-                                          "Actualizar",
-                                          icon = icon("refresh"))
-                             )),
-             fluidRow(column(12,
-                             htmlOutput("pdfViewer")
-                             ))
-             )
+pdfUI <- fluidRow(column(12,
+                         htmlOutput("pdfViewer")
+                         ))
 
 ## UI completa
 shinyUI(
