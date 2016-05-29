@@ -3,13 +3,13 @@ library(data.table)
 
 semestre <- 2
 
-source('../aux/defs.R')
-source('../aux/funciones.R')
+source('../misc/defs.R')
+source('../misc/funciones.R')
 source('calendar.R')
 
 ## Leo los horarios de todos los grupos
 ## Horarios con aulas
-horariosPath <- '../data/horarios/'
+horariosPath <- '../horarios/csv/'
 files <- dir(horariosPath, pattern = '.csv')
 horarios <- rbindlist(lapply(paste0(horariosPath, files),
                              fread, encoding = 'UTF-8'))
