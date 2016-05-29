@@ -1,21 +1,46 @@
-\documentclass{article}
-
+\documentclass[10pt,a4paper, spanish]{article}
+\usepackage[utf8]{inputenc} 
+\usepackage[T1]{fontenc}
+\usepackage[left=2cm,right=2cm,top=2cm,bottom=2cm]{geometry}
 \usepackage[spanish]{babel}
-\usepackage{lipsum}
+\usepackage{eso-pic}
+\newcommand\AtPageUpperRight[1]{\AtPageUpperLeft{%
+   \makebox[\paperwidth][r]{#1}}}
+
+\AddToShipoutPictureBG{%
+  \AtPageUpperLeft{
+    \raisebox{-1.1\height}{
+      \includegraphics[width=0.12\textwidth]{LogoUPM.pdf}
+    }}}
+
+\AddToShipoutPicture{%
+  \AtPageUpperRight{
+    \raisebox{-1.1\height}{
+      \includegraphics[width=0.12\textwidth]{LogoETSIDI.pdf}
+    }}}
+
+% Will change name of weekdays
 \usepackage[spanish]{translator}
+
+\pagestyle{empty}
+
 \usepackage{tikz}
 \usetikzlibrary{calendar,positioning}
 
+\usepackage{mathpazo}
+
 \newcommand{\monyear}[2]{
-\calendar[dates = #2-#1-01 to #2-#1-last] 
+\colorlet{darkgreen}{green!50!black}
+\calendar[dates = #2-#1-01 to #2-#1-last,
+month label above centered,week list,
+month text=\textcolor{darkgreen}{\%mt \%y0}]
 if (Sunday,Saturday) [black!50]
-\holidays;
+\calETSIDI;
 }
 
-
-\tikzstyle{fiesta}=[text=red!90!white]
-\tikzstyle{especial}=[text=blue!90!white]
+\tikzstyle{fiesta}=[text=red!90!black]
+\tikzstyle{especial}=[text=blue!90!black]
 \tikzstyle{lectivo}=[text=black]
-\tikzstyle{examen}=[text=brown!90!white]
-\tikzstyle{matricula}=[text=yellow!90!white]
+\tikzstyle{examen}=[text=brown!90!black]
+\tikzstyle{matricula}=[text=yellow!90!black]
 \tikzstyle{AA}=[text=green!90!black]

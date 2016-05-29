@@ -1,94 +1,100 @@
 \begin{document}
 
-\begin{tikzpicture}
-[every calendar/.style={
-            month label above centered,
-            month text = {\%mt \%y0},
-            week list,
-        }]
-\matrix (Calendar) [column sep=4em, row sep=3em] {
-    \monyear{09}{2016} & \monyear{10}{2016} & \monyear{11}{2016} \\
-    \monyear{12}{2016} & \monyear{01}{2017} & \monyear{02}{2017} \\
-    \monyear{03}{2017} & \monyear{04}{2017} & \monyear{05}{2017} \\
-    \monyear{06}{2017} & \monyear{07}{2017} & \monyear{08}{2017} \\
-        };
-\end{tikzpicture}
+\begin{center}
+  {\LARGE \textsc{Primer Semestre}}
 
-\clearpage
-\begin{tikzpicture}
-[every calendar/.style={
-            month label above centered,
-            month text = {\%mt \%y0},
-            week list,
-        }]
-\matrix (Calendar) [column sep=4em, row sep=3em] {
-    \monyear{09}{2016} & \monyear{10}{2016} & \monyear{11}{2016} \\
-    \monyear{12}{2016} & \monyear{01}{2017} & \monyear{02}{2017} \\
-  };
-\end{tikzpicture}
+  \vspace{10mm}
+
+  \begin{tikzpicture}
+    \matrix (Calendar) [column sep=4em, row sep=3em] {
+      \monyear{09}{2016} & \monyear{10}{2016} & \monyear{11}{2016} \\
+      \monyear{12}{2016} & \monyear{01}{2017} \\
+    };
+  \end{tikzpicture}
+
+  \vspace{10mm}
+
+  \primerSemestre
+
+\end{center}
 
 \clearpage
 
-\begin{tikzpicture}
-[every calendar/.style={
-            month label above centered,
-            month text = {\%mt \%y0},
-            week list,
-        }]
-\matrix (Calendar) [column sep=4em, row sep=3em] {
-    \monyear{02}{2017} & \monyear{03}{2017} & \monyear{04}{2017} \\
-    \monyear{05}{2017} & \monyear{06}{2017} & \monyear{07}{2017} \\
-  };
-\end{tikzpicture}
+\begin{center}
+  {\LARGE \textsc{Segundo Semestre}}
 
-\clearpage
+  \vspace{10mm}
 
-\begin{tikzpicture}
-\sffamily
-\colorlet{darkgreen}{green!50!black}
-\calendar[dates=2016-09-01 to 2017-02-last,week list,
-month label left,month yshift=0pt,
-month text=\textcolor{darkgreen}{\%m0}]
-if (Sunday) [black!50];
-\holidays;
-\end{tikzpicture}
+  \begin{tikzpicture}
+    \matrix (Calendar) [column sep=4em, row sep=3em] {
+      \monyear{02}{2017} & \monyear{03}{2017} & \monyear{04}{2017} \\
+      \monyear{05}{2017} & \monyear{06}{2017} & \monyear{07}{2017} \\
+    };
+  \end{tikzpicture}
 
-\clearpage
+  \vspace{10mm}
 
-\begin{minipage}{0.5\textwidth}  
-\begin{tikzpicture}
-\sffamily
-\colorlet{darkgreen}{green!50!black}
-\calendar[dates=2016-09-01 to 2017-02-last,week list,
-month label above left,
-month text=\textcolor{darkgreen}{\%mt \%y0}]
-if (Sunday,Saturday) [black!50]
-\holidays;
-\end{tikzpicture}
-\end{minipage}\hfill
-\begin{minipage}{0.5\textwidth}
-Primer Semestre
+  \segundoSemestre
 
-\lipsum[100]
-\end{minipage}
+\end{center}
+% \clearpage
+% \begin{tikzpicture}
+% \matrix (Calendar) [column sep=4em, row sep=3em] {
+%     \monyear{09}{2016} & \monyear{10}{2016} & \monyear{11}{2016} \\
+%     \monyear{12}{2016} & \monyear{01}{2017} & \monyear{02}{2017} \\
+%     \monyear{03}{2017} & \monyear{04}{2017} & \monyear{05}{2017} \\
+%     \monyear{06}{2017} & \monyear{07}{2017} & \monyear{08}{2017} \\
+%         };
+% \end{tikzpicture}
 
-\clearpage
-\begin{minipage}{0.5\textwidth}  
-\begin{tikzpicture}
-\sffamily
-\colorlet{darkgreen}{green!50!black}
-\calendar[dates=2017-02-01 to 2017-07-last,week list,
-month label above left,
-month text=\textcolor{darkgreen}{\%mt \%y0}]
-if (Sunday,Saturday) [black!50]
-\holidays;
-\end{tikzpicture}
-\end{minipage}\hfill
-\begin{minipage}{0.5\textwidth}
-\textsc{Segundo Semestre}
+% \clearpage
 
-%\input{texto2S.tex}
+% \begin{tikzpicture}
+% \sffamily
+% \colorlet{darkgreen}{green!50!black}
+% \calendar[dates=2016-09-01 to 2017-02-last,week list,
+% month label left,month yshift=0pt,
+% month text=\textcolor{darkgreen}{\%m0}]
+% if (Sunday) [black!50];
+% \holidays;
+% \end{tikzpicture}
 
-\end{minipage}
+% \clearpage
+
+% \begin{minipage}{0.5\textwidth}  
+% \begin{tikzpicture}
+% \sffamily
+% \colorlet{darkgreen}{green!50!black}
+% \calendar[dates=2016-09-01 to 2017-02-last,week list,
+% month label above left,
+% month text=\textcolor{darkgreen}{\%mt \%y0}]
+% if (Sunday,Saturday) [black!50]
+% \holidays;
+% \end{tikzpicture}
+% \end{minipage}\hfill
+% \begin{minipage}{0.5\textwidth}
+% Primer Semestre
+
+% \lipsum[100]
+% \end{minipage}
+
+% \clearpage
+% \begin{minipage}{0.5\textwidth}  
+% \begin{tikzpicture}
+% \sffamily
+% \colorlet{darkgreen}{green!50!black}
+% \calendar[dates=2017-02-01 to 2017-07-last,week list,
+% month label above left,
+% month text=\textcolor{darkgreen}{\%mt \%y0}]
+% if (Sunday,Saturday) [black!50]
+% \holidays;
+% \end{tikzpicture}
+% \end{minipage}\hfill
+% \begin{minipage}{0.5\textwidth}
+% \textsc{Segundo Semestre}
+
+% %\input{texto2S.tex}
+
+% \end{minipage}
 
 \end{document}

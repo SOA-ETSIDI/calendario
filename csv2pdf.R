@@ -1,12 +1,25 @@
 preamble <- paste(readLines('preambleCal.tex'), collapse = "\n")
 document <- paste(readLines('documentCal.tex'), collapse = "\n")
 
-calPDF <- function(cal, nombre = "ETSIDI_2016_2017")
+calPDF <- function(cal, nombre = "ETSIDI_2016_2017", dest = tempdir())
 {
-
-    diasHeader <- "\\newcommand{\\holidays}[0]{"
+    ## Filtro solo grado
+    cal <- cal[Tipo %in% c("ETSIDI", "Grado")]
+    
+    diasHeader <- "\\newcommand{\\calETSIDI}[0]{"
     diasEnd <- ";}\n"
 
+    S1Header <- "\\newcommand{\\primerSemestre}{"
+    S1End <- "}\n"
+    fechasS1 <- cal[Descripcion == "Primer semestre",
+                     .(Dia, Final)]
+    S1 <- cal[Dia >= fechasS1$Dia & Final <= fechasS1$Final]
+    S2Header <- "\\newcommand{\\segundoSemestre}[0]{"
+    S2End <- "}\n"
+    fechasS2 <- cal[Descripcion == "Segundo semestre",
+                    .(Dia, Final)]
+    S2 <- cal[Dia >= fechasS2$Dia & Final <= fechasS2$Final]
+    
     dayTex <- function(x, formato)
     {
         paste(
@@ -40,20 +53,28 @@ calPDF <- function(cal, nombre = "ETSIDI_2016_2017")
                      Tipo)
                    ]
 
-    oneGTex <- oneDay[Tipo %in% c("ETSIDI", "Grado"),
-                      dayTex(Dia, Formato)]
+    oneTex <- oneDay[, dayTex(Dia, Formato)]
 
-    seqGTex <- seqDays[Tipo %in% c("ETSIDI", "Grado"),
-                       seqTex(Inicio, Final, Formato)]
+    seqTex <- seqDays[, seqTex(Inicio, Final, Formato)]
 
-    texG <- paste(diasHeader,
-                  oneGTex, seqGTex,
+    calTex <- paste(diasHeader,
+                  oneTex, seqTex,
                   diasEnd,
+                  S1Header, paste(S1[, Descripcion], collapse = "\n\n"), S1End,
+                  S2Header, paste(S2[, Descripcion], collapse = "\n\n"), S2End,
                   sep = '\n')
-
-    old <- setwd(tempdir())
+    ## Logos
+    file.copy(paste0('../misc/',
+                     c('LogoETSIDI.pdf', 'LogoUPM.pdf')),
+              dest)
+    old <- setwd(dest)
     f <- paste0(nombre, '.tex')
-    writeLines(paste(preamble, texG, document), f) 
+    calTex <- paste(preamble, calTex, document)
+    writeLines(calTex, f) 
     system2('pdflatex', f)
+    files2clean <- list.files('.', "(log|aux)")
+    file.remove(files2clean)
     setwd(old)
+
+    invisible(calTex)
 }
