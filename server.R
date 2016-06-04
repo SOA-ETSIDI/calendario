@@ -7,6 +7,7 @@ source('init.R')
 cal <- leeCalendario()
 
 shinyServer(function(input,output,session){
+    disable("update")
 
     output$table <- renderRHandsontable({
         cal[, Dia := as.character(Dia)]
@@ -28,12 +29,13 @@ shinyServer(function(input,output,session){
         ## iframe si actualizo tabla
         refresh <- input$table
         tags$iframe(style="height:600px; width:100%",
-                    src=paste0("pdf/", "ETSIDI_2016_2017", 
+                    src=paste0("pdf/", "ETSIDI_Grado_2016_2017", 
                                ".pdf#zoom=page-width"))
     })
     ## Refresco PDF
     observeEvent(input$table,
     {
+        enable("update")
         df <- hot_to_r(input$table)
         calPDF(df)
     })
