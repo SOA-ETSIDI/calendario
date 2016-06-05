@@ -29,19 +29,19 @@
 
 \usepackage{mathpazo}
 
+\colorlet{blueUPM}{blue!70!black}
+
 \newcommand{\monyear}[2]{
-\colorlet{darkgreen}{green!50!black}
 \calendar[dates = #2-#1-01 to #2-#1-last,
 month label above centered,week list,
-month text=\textcolor{darkgreen}{\%mt \%y0}]
+month text=\textcolor{blueUPM}{\%mt \%y0}]
 \seqETSIDI
 \oneDayETSIDI
 if (Sunday,Saturday) [black!50];
 }
 
-\tikzstyle{fiesta}=[text=red!90!black]
-\tikzstyle{especial}=[text=blue!90!black]
+\tikzstyle{fiesta}=[text=green!70!black, font=\itshape]
+\tikzstyle{especial}=[text=blue!60!black, font=\bfseries,nodes={fill=black!5}]
 \tikzstyle{lectivo}=[text=black]
-\tikzstyle{examen}=[text=brown!90!black]
-\tikzstyle{matricula}=[text=yellow!90!black]
-\tikzstyle{AA}=[text=green!90!black]
+\tikzstyle{examen}=[text=red!65!black,font=\bfseries,nodes={fill=black!10}]
+\tikzstyle{matricula}=[text=brown!75!black]
