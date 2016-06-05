@@ -5,13 +5,14 @@ library(shinyjs)
 source('init.R')
 
 cal <- leeCalendario()
+makeCalPDF(cal)
 
 shinyServer(function(input,output,session){
     disable("update")
 
     output$table <- renderRHandsontable({
-        cal[, Dia := as.character(Dia)]
-        cal[, Final := as.character(Dia)]
+        cal[, Inicio := as.character(Inicio)]
+        cal[, Final := as.character(Final)]
         
         hot <- rhandsontable(cal,
                              rowHeaders = NULL,
@@ -29,7 +30,7 @@ shinyServer(function(input,output,session){
         ## iframe si actualizo tabla
         refresh <- input$table
         tags$iframe(style="height:600px; width:100%",
-                    src=paste0("pdf/", "ETSIDI_Grado_2016_2017", 
+                    src=paste0("pdf/ETSIDI_", curso, 
                                ".pdf#zoom=page-width"))
     })
     ## Refresco PDF
@@ -37,14 +38,16 @@ shinyServer(function(input,output,session){
     {
         enable("update")
         df <- hot_to_r(input$table)
-        calPDF(df)
+        try(makeCalPDF(df))
     })
 
     ## Grabo datos en csv
     observeEvent(input$update,
     {
         df <- hot_to_r(input$table)
-        write.csv(df, file = '/tmp/cal.csv', row.names = FALSE)
+        write.csv(df,
+                  file = paste0('calendarioETSIDI_', curso, '.csv'),
+                  row.names = FALSE)
         info('Tabla modificada correctamente.')
     })
     

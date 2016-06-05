@@ -49,14 +49,14 @@ calPDF <- function(cal, curso = "2016_2017", tipo = "Grado",
     S2End <- "\n\\end{itemize}}\n"
 
     fechasS1 <- cal[Descripcion == "Primer semestre",
-                    .(Dia, Final)]
+                    .(Inicio, Final)]
     fechasS2 <- cal[Descripcion == "Segundo semestre",
-                    .(Dia, Final)]
+                    .(Inicio, Final)]
 
-    S1 <- cal[Dia >= as.Date(paste0(Years[1], '-09-01')) &
-              Dia < fechasS2$Dia]
-    S2 <- cal[Dia >= fechasS2$Dia &
-              Dia <= as.Date(paste0(Years[2], '-07-31'))]
+    S1 <- cal[Inicio >= as.Date(paste0(Years[1], '-09-01')) &
+              Inicio < fechasS2$Inicio]
+    S2 <- cal[Inicio >= fechasS2$Inicio &
+              Inicio <= as.Date(paste0(Years[2], '-07-31'))]
     
     dayTex <- function(x, formato)
     {
@@ -75,22 +75,22 @@ calPDF <- function(cal, curso = "2016_2017", tipo = "Grado",
     }
 
     ## Eventos de 1 sólo día
-    oneTex <- cal[isOneDay(Dia, Final),
-                  dayTex(Dia, Formato)]
+    oneTex <- cal[isOneDay(Inicio, Final),
+                  dayTex(Inicio, Formato)]
     ## Eventos que ocupan un período.
-    seqTex <- cal[!isOneDay(Dia, Final),
-                  seqTex(Dia, Final, Formato)]
+    seqTex <- cal[!isOneDay(Inicio, Final),
+                  seqTex(Inicio, Final, Formato)]
 
     S1Tex <- paste(S1Header,
                    paste(S1[,
-                            event(Descripcion, Dia, Final)],
+                            event(Descripcion, Inicio, Final)],
                          collapse = "\n"),
                    S1End,
                    collapse = "\n")
     
     S2Tex <- paste(S2Header,
                    paste(S2[,
-                            event(Descripcion, Dia, Final)],
+                            event(Descripcion, Inicio, Final)],
                          collapse = "\n"),
                    S2End,
                    collapse = "\n")
