@@ -30,7 +30,7 @@ shinyServer(function(input,output,session){
         ## iframe si actualizo tabla
         refresh <- input$table
         tags$iframe(style="height:600px; width:100%",
-                    src=paste0("pdf/ETSIDI_", curso, 
+                    src=paste0("pdf/ETSIDI_", cursoActual, 
                                ".pdf#zoom=page-width"))
     })
     ## Refresco PDF
@@ -46,7 +46,7 @@ shinyServer(function(input,output,session){
     {
         df <- hot_to_r(input$table)
         write.csv(df,
-                  file = paste0('calendarioETSIDI_', curso, '.csv'),
+                  file = paste0('calendarioETSIDI_', cursoActual, '.csv'),
                   row.names = FALSE)
         info('Tabla modificada correctamente.')
     })
