@@ -3,6 +3,9 @@
 \usepackage[T1]{fontenc}
 \usepackage[left=2cm,right=2cm,top=2cm,bottom=2cm]{geometry}
 \usepackage[spanish]{babel}
+\usepackage{enumitem}
+\setlist{itemsep=1pt} 
+\def\labelitemi{--}
 \usepackage{eso-pic}
 \newcommand\AtPageUpperRight[1]{\AtPageUpperLeft{%
    \makebox[\paperwidth][r]{#1}}}
@@ -23,17 +26,17 @@
 \usepackage[spanish]{translator}
 
 \pagestyle{empty}
+\pagenumbering{gobble}
 
 \usepackage{tikz}
 \usetikzlibrary{calendar,positioning}
 
 \usepackage{mathpazo}
 
-\colorlet{blueUPM}{blue!70!black}
 \newcommand{\monyear}[2]{
 \calendar[dates = #2-#1-01 to #2-#1-last,
 month label above centered,week list,
-month text=\textcolor{blueUPM}{\%mt \%y0},
+month text=\textcolor{black}{\%mt \%y0},
 days={
     text width=width("00"),
     align=right}]
@@ -43,8 +46,10 @@ if (Sunday) [black!50, font=\itshape, nodes={fill=white}]
 if (Saturday) [black!50];
 }
 \tikzstyle{fiesta}=[text=green!70!black, font=\itshape]
-\tikzstyle{especial}=[text=blue!60!black, font=\bfseries,nodes={draw=black!20}]
-\tikzstyle{lectivo}=[text=black]
-\tikzstyle{examen}=[text=red!65!black,font=\bfseries,nodes={fill=black!10}]
-\tikzstyle{matricula}=[text=brown!75!black]
+\tikzstyle{especial}=[text=blue!60!black, font=\bfseries,nodes={draw=blue!60!white}]
+\tikzstyle{normal}=[text=black]
+\tikzstyle{lectivo}=[text=blue!70!black]
+\tikzstyle{aa}=[text=blue!60!white, font=\itshape]
+\tikzstyle{examen}=[text=red!65!black,font=\bfseries]
+\tikzstyle{matricula}=[nodes={fill=black!10}]
 

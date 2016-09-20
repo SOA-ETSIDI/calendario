@@ -3,7 +3,7 @@ library(data.table)
 source('../misc/defs.R')
 source('../misc/funciones.R')
 source('csv2pdf.R')
-cursoActual <- '2016_2017'
+cursoActual <- '2016-2017'
 
 leeCalendario <- function(curso = cursoActual)
 {
@@ -21,9 +21,10 @@ makeCalPDF <- function(x, curso = cursoActual)
 {
     calPDF(x, curso = curso, tipo = 'Grado')
     calPDF(x, curso = curso, tipo = 'Master')
-    pdfs <- paste0('ETSIDI_',
+    pdfs <- paste0('Calendario_',
                    c('Grado_', 'Master_'),
-                   curso, '.pdf',
+                   sub('-', '_', curso),
+                   '.pdf',
                    collapse = ' ')
     old <- setwd(tempdir())
     system2('pdftk', args = c(pdfs,

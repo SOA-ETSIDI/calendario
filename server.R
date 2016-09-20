@@ -3,6 +3,7 @@ library(shiny)
 library(shinyjs)
 
 source('init.R')
+addResourcePath("pdf", tempdir())
 
 cal <- leeCalendario()
 makeCalPDF(cal)

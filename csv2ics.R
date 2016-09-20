@@ -1,22 +1,23 @@
 library(openssl)
 library(data.table)
 
-semestre <- 2
-
 source('../misc/defs.R')
 source('../misc/funciones.R')
-source('calendar.R')
+source('parseCalendar.R')
 
 ## Leo los horarios de todos los grupos
 ## Horarios con aulas
 horariosPath <- '../horarios/csv/'
-files <- dir(horariosPath, pattern = '.csv')
+files <- dir(horariosPath, pattern = '.csv$')
 horarios <- rbindlist(lapply(paste0(horariosPath, files),
-                             fread, encoding = 'UTF-8'))
+                             fread,
+                             na.string = "", 
+                             encoding = 'UTF-8'),
+                      fill = TRUE)
 ## Filtro por semestre
-horarios <- horarios[Semestre %in% (semestre * 1:4),
+horarios <- horarios[,
                      .(Asignatura,
-                       Tipo = tipo,
+                       Tipo,
                        Grupo, Titulacion,
                        Dia = factor(Dia, dias),
                        HoraInicio, HoraFinal,
@@ -26,35 +27,35 @@ horG <- horarios[Titulacion %in% grados]
 ## Horas Tuthoras
 tuthora1 <- horG[, .(Asignatura = "Hora Tuthora", Tipo = "Tutoria",
                     Dia = dias,
-                    HoraInicio = "11:15", HoraFinal = "11:45",
-                    Titulacion = unique(Titulacion),
-                    Semestre = unique(Semestre)),
-                by = Grupo]
+                    HoraInicio = "11:15", HoraFinal = "11:45"),
+                 by = .(Grupo, Titulacion, Semestre)]
+
 tuthora2 <- horG[, .(Asignatura = "Hora Tuthora", Tipo = "Tutoria",
                     Dia = dias,
-                    HoraInicio = "17:15", HoraFinal = "17:45",
-                    Titulacion = unique(Titulacion),
-                    Semestre = unique(Semestre)),
-                 by = Grupo]
+                    HoraInicio = "17:15", HoraFinal = "17:45"),
+                 by = .(Grupo, Titulacion, Semestre)]
+
 horG <- rbind(horG, tuthora1, tuthora2)
-setkey(horG, Dia)
+setkey(horG, Semestre, Dia)
 ## Horarios de másteres
 horM <- horarios[!(Titulacion %in% grados)]
-setkey(horM, Dia)
+setkey(horM, Semestre, Dia)
 
-## Calendario generado con calendar.R
+## Calendario generado con parseCalendar.R
 calG <- as.data.table(calendarG)
-## Ordeno por días y filtro por semestre
-calG <- calG[Semestre == semestre,
+## Ordeno por días y semestre
+calG <- calG[,
             .(Dia = factor(Dia, dias),
-              d)]
-setkey(calG, Dia)
+              d,
+              Semestre)]
+setkey(calG, Semestre, Dia)
 
 calM <- as.data.table(calendarM)
-calM <- calM[Semestre == semestre,
+calM <- calM[,
             .(Dia = factor(Dia, dias),
-              d)]
-setkey(calM, Dia)
+              d,
+              Semestre)]
+setkey(calM, Semestre, Dia)
 
 
 ## Hago un join de horarios con calendario usando allow.cartesian
@@ -86,39 +87,63 @@ by = Grupo]
 
 
 ## Calendario general de la ETSIDI
-events <- calETSIDI$Descripcion
-inicio <- as.Date(calETSIDI$Dia)
-final <- as.Date(calETSIDI$Final)
-idxNA <- is.na(final)
 
 ## Eventos de 1 sólo día
-oneDay <- data.frame(titulo = events[idxNA],
-                     inicio = inicio[idxNA],
-                     ## The "DTEND" property for a "VEVENT" calendar component specifies
-                     ## the non-inclusive end of the event
-                     final = inicio[idxNA] + 1)
+oneDay <- calETSIDI[isOneDay(Inicio, Final),
+                    .(titulo = Descripcion,
+                      inicio = Inicio,
+                      final = Inicio + 1,
+                      Tipo)
+                    ## The "DTEND" property for a "VEVENT" calendar component specifies the non-inclusive end of the event
+                    ]
 ## Eventos que ocupan un período.
+perDay <- calETSIDI[!isOneDay(Inicio, Final)]
 ## Día de comienzo
-iDays <- data.frame(titulo = paste('Inicio', events[!idxNA]),
-                    inicio = inicio[!idxNA],
-                    final = inicio[!idxNA] + 1)
+iDays <- perDay[,
+                .(titulo = paste('Inicio de', Descripcion),
+                  inicio = Inicio,
+                  final = Inicio + 1,
+                  Tipo)
+                ]
 ## Dia de final
-fDays <- data.frame(titulo = paste('Final', events[!idxNA]),
-                    inicio = final[!idxNA],
-                    final = final[!idxNA] + 1)
+fDays <- perDay[,
+                .(titulo = paste('Fin de', Descripcion),
+                  inicio = Final,
+                  final = Final + 1,
+                  Tipo)
+                ]
 ## All together now
 ETSIDI <- rbind(oneDay, iDays, fDays)
+ETSIDIGrado <- ETSIDI[Tipo %in% c('ETSIDI', 'Grado')]
+ETSIDIMaster <- ETSIDI[Tipo %in% c('ETSIDI', 'Master')]
 
-ETSIDI$id <- with(ETSIDI,
-                  paste0(md5(paste0(events, inicio, final),
-                             '@subdireccion.oa.etsidi')))
+ETSIDIGrado[,
+             id := paste0(md5(paste0(titulo, inicio, final),
+                              '@subdireccion.oa.etsidi'))
+            ]
+ETSIDIMaster[,
+             id := paste0(md5(paste0(titulo, inicio, final),
+                               '@subdireccion.oa.etsidi'))
+             ]
 
-icsETSIDI <- with(ETSIDI,
-                  makeCalendar(titulo = titulo,
-                               descripcion = "",
-                               inicio = inicio,
-                               final = final,
-                               UUID = id,
-                               calname = "ETSIDI"))
+icsETSIDIGrado <- ETSIDIGrado[,
+                              makeCalendar(titulo = titulo,
+                                           descripcion = "",
+                                           inicio = inicio,
+                                           final = final,
+                                           UUID = id,
+                                           calname = "ETSIDI_Grado")
+                              ]
+writeLines(icsETSIDIGrado, '/tmp/ETSIDI_Grado.ics')
 
-writeLines(icsETSIDI, '/tmp/ETSIDI.ics')
+icsETSIDIMaster <- ETSIDIMaster[,
+                              makeCalendar(titulo = titulo,
+                                           descripcion = "",
+                                           inicio = inicio,
+                                           final = final,
+                                           UUID = id,
+                                           calname = "ETSIDI_Master")
+                              ]
+
+writeLines(icsETSIDIMaster, '/tmp/ETSIDI_Master.ics')
+

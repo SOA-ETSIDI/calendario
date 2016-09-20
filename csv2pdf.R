@@ -1,11 +1,6 @@
 preamble <- paste(readLines('preambleCal.tex'), collapse = "\n")
 document <- paste(readLines('documentCal.tex'), collapse = "\n")
 
-isOneDay <- function(inicio, final)
-{
-    (is.na(final) | inicio == final)
-}
-
 event <- function(descripcion, inicio, final = NA)
 {
     inicio <- as.Date(inicio)
@@ -22,14 +17,19 @@ event <- function(descripcion, inicio, final = NA)
            )
 }
 
-calPDF <- function(cal, curso = "2016_2017", tipo = "Grado",
+calPDF <- function(cal, curso = "2016-2017", tipo = "Grado",
                    dest = tempdir())
 {
     cal <- as.data.table(cal)
     ## Filtro por grado o Máster
     cal <- cal[Tipo %in% c("ETSIDI", tipo) & !is.na(Formato)]
 
-    Years <- as.numeric(strsplit(curso, "_")[[1]])
+    Years <- as.numeric(strsplit(curso, "-")[[1]])
+
+    title <- paste0("\\title{\\vspace{-2cm}",
+                    "Curso ", curso,
+                    " (", tipo, ")",
+                    "\\vspace{-1cm}}\n")
     
     oneDayHeader <- "\\newcommand{\\oneDayETSIDI}{"
     oneDayEnd <- "}\n"
@@ -38,13 +38,11 @@ calPDF <- function(cal, curso = "2016_2017", tipo = "Grado",
     seqEnd <- "}\n"
 
     S1Header <- paste0("\\newcommand{\\primerSemestre}",
-                       "{\n{\\LARGE\\textsc{Primer Semestre}",
-                       " (", tipo, ")}\n",
+                       "{\n{\\large\\textsc{Primer Semestre}}\n",
                        "\\begin{itemize}\n")
     S1End <- "\n\\end{itemize}}\n"
     S2Header <- paste0("\\newcommand{\\segundoSemestre}",
-                       "{\n{\\LARGE\\textsc{Segundo Semestre}",
-                       " (", tipo, ")}\n",
+                       "{\n{\\large\\textsc{Segundo Semestre}}\n",
                        "\\begin{itemize}\n")
     S2End <- "\n\\end{itemize}}\n"
 
@@ -82,14 +80,14 @@ calPDF <- function(cal, curso = "2016_2017", tipo = "Grado",
                   seqTex(Inicio, Final, Formato)]
 
     S1Tex <- paste(S1Header,
-                   paste(S1[,
+                   paste(S1[Descripcion != "Primer semestre",
                             event(Descripcion, Inicio, Final)],
                          collapse = "\n"),
                    S1End,
                    collapse = "\n")
     
     S2Tex <- paste(S2Header,
-                   paste(S2[,
+                   paste(S2[Descripcion != "Segundo semestre",
                             event(Descripcion, Inicio, Final)],
                          collapse = "\n"),
                    S2End,
@@ -103,13 +101,15 @@ calPDF <- function(cal, curso = "2016_2017", tipo = "Grado",
                      c('LogoETSIDI.pdf', 'LogoUPM.pdf')),
               dest)
     old <- setwd(dest)
-    f <- paste0("ETSIDI", "_",
+    f <- paste0("Calendario", "_",
                 tipo, "_",
-                curso, '.tex')
+                sub('-', '_', curso),
+                '.tex')
     calTex <- paste(preamble,
                     calTex,
                     S1Tex,
                     S2Tex,
+                    title,
                     document,
                     sep = '\n')
     writeLines(calTex, f) 
