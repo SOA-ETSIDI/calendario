@@ -25,7 +25,7 @@ makeCalPDF <- function(x, curso = cursoActual)
     pdfs <- paste0('Calendario_',
                    c('Grado_', 'Master_'),
                    sub('-', '_', curso),
-                   '.pdf',
+                   "_1p.pdf",
                    collapse = ' ')
     old <- setwd(tempdir())
     system2('pdftk', args = c(pdfs,
