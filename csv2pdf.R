@@ -1,5 +1,6 @@
 preamble <- paste(readLines('preambleCal.tex'), collapse = "\n")
-document <- paste(readLines('documentCal.tex'), collapse = "\n")
+document1p <- paste(readLines('documentCal1p.tex'), collapse = "\n")
+document2p <- paste(readLines('documentCal2p.tex'), collapse = "\n")
 
 event <- function(descripcion, inicio, final = NA)
 {
@@ -18,12 +19,18 @@ event <- function(descripcion, inicio, final = NA)
 }
 
 calPDF <- function(cal, curso = "2016-2017", tipo = "Grado",
+                   formato = '1p',
                    dest = tempdir())
 {
     cal <- as.data.table(cal)
     ## Filtro por grado o Máster
     cal <- cal[Tipo %in% c("ETSIDI", tipo) & !is.na(Formato)]
 
+    ## Formato: 1 ó 2 páginas
+    document <- switch(formato,
+                       '1p' = document1p,
+                       '2p' = document2p)
+    
     Years <- as.numeric(strsplit(curso, "-")[[1]])
 
     title <- paste0("\\title{\\vspace{-2cm}",
@@ -104,6 +111,7 @@ calPDF <- function(cal, curso = "2016-2017", tipo = "Grado",
     f <- paste0("Calendario", "_",
                 tipo, "_",
                 sub('-', '_', curso),
+                "_", formato,
                 '.tex')
     calTex <- paste(preamble,
                     calTex,

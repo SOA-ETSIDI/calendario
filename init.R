@@ -19,8 +19,9 @@ leeCalendario <- function(curso = cursoActual)
 
 makeCalPDF <- function(x, curso = cursoActual)
 {
-    calPDF(x, curso = curso, tipo = 'Grado')
-    calPDF(x, curso = curso, tipo = 'Master')
+    calPDF(x, curso = curso, tipo = 'Grado', formato = '1p')
+    calPDF(x, curso = curso, tipo = 'Master', formato = '1p')
+    ## Genero un PDF con los dos calendarios para mostrarlo en el visor de PDFs
     pdfs <- paste0('Calendario_',
                    c('Grado_', 'Master_'),
                    sub('-', '_', curso),
