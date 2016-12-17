@@ -74,7 +74,7 @@ wd0G <- format(lDaysG, '%A')
 idxG <- match(dCambios, lDaysG)
 ## wd es el día de la semana con cambios
 wdG <- wd0G
-wdG[idxG] <- cambios[which(dCambios %in% lDaysM)]
+wdG[idxG] <- cambios[which(dCambios %in% lDaysG)]
 
 ## Máster: día de la semana original (sin cambios)
 wd0M <- format(lDaysM, '%A')
