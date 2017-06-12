@@ -17,15 +17,15 @@ leeCalendario <- function(curso = cursoActual)
     setkey(calETSIDI, Inicio)
 }
 
-makeCalPDF <- function(x, curso = cursoActual)
+makeCalPDF <- function(x, curso = cursoActual, formato = 'v')
 {
-    calPDF(x, curso = curso, tipo = 'Grado', formato = '1p')
-    calPDF(x, curso = curso, tipo = 'Master', formato = '1p')
+    calPDF(x, curso = curso, tipo = 'Grado', formato = formato)
+    calPDF(x, curso = curso, tipo = 'Master', formato = formato)
     ## Genero un PDF con los dos calendarios para mostrarlo en el visor de PDFs
     pdfs <- paste0('Calendario_',
                    c('Grado_', 'Master_'),
                    sub('-', '_', curso),
-                   "_1p.pdf",
+                   "_", formato, ".pdf",
                    collapse = ' ')
     old <- setwd(tempdir())
     system2('pdftk', args = c(pdfs,

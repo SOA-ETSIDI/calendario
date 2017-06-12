@@ -1,6 +1,6 @@
 preamble <- paste(readLines('preambleCal.tex'), collapse = "\n")
-document1p <- paste(readLines('documentCal1p.tex'), collapse = "\n")
-document2p <- paste(readLines('documentCal2p.tex'), collapse = "\n")
+documentV <- paste(readLines('documentCalV.tex'), collapse = "\n")
+documentH <- paste(readLines('documentCalH.tex'), collapse = "\n")
 
 event <- function(descripcion, inicio, final = NA)
 {
@@ -20,7 +20,7 @@ event <- function(descripcion, inicio, final = NA)
 }
 
 calPDF <- function(cal, curso = "2016-2017", tipo = "Grado",
-                   formato = '1p',
+                   formato = 'v',
                    dest = tempdir())
 {
     cal <- as.data.table(cal)
@@ -29,8 +29,8 @@ calPDF <- function(cal, curso = "2016-2017", tipo = "Grado",
 
     ## Formato: 1 ó 2 páginas
     document <- switch(formato,
-                       '1p' = document1p,
-                       '2p' = document2p)
+                       'v' = documentV,
+                       'h' = documentH)
     
     Years <- as.numeric(strsplit(curso, "-")[[1]])
 
