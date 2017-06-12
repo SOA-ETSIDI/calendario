@@ -10,11 +10,12 @@ event <- function(descripcion, inicio, final = NA)
     dm <- function(x) format(x, "%e de %B")
     
     ifelse(isOneDay(inicio, final),
-           paste0("\\item ", "\\textbf{", descripcion, "}: ",
-                  dm(inicio)),
-           paste0("\\item ", "\\textbf{", descripcion,
-                  "}: desde el ", dm(inicio),
-                  " hasta el ", dm(final))
+           paste0("\\item ", dm(inicio),
+                  ": \\textbf{", descripcion, "}"),
+           paste0("\\item Desde el ", dm(inicio),
+                  " hasta el ", dm(final),
+                  ": \\textbf{", descripcion,
+                  "}")
            )
 }
 
