@@ -1,6 +1,8 @@
 library(openssl)
 library(data.table)
 
+cursoActual <- '2017-2018'
+
 source('../misc/defs.R')
 source('../misc/funciones.R')
 source('parseCalendar.R')
