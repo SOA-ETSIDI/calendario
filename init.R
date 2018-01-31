@@ -3,7 +3,6 @@ library(data.table)
 source('../misc/defs.R')
 source('../misc/funciones.R')
 source('csv2pdf.R')
-cursoActual <- '2017-2018'
 
 leeCalendario <- function(curso = cursoActual)
 {
