@@ -19,7 +19,7 @@ event <- function(descripcion, inicio, final = NA)
            )
 }
 
-calPDF <- function(cal, curso = "2016-2017", tipo = "Grado",
+calPDF <- function(cal, curso = cursoActual, tipo = "Grado",
                    formato = 'v',
                    dest = tempdir())
 {
@@ -32,8 +32,12 @@ calPDF <- function(cal, curso = "2016-2017", tipo = "Grado",
                        'v' = documentV,
                        'h' = documentH)
     
-    Years <- as.numeric(strsplit(curso, "-")[[1]])
+    Year0 <- as.numeric(strsplit(curso, "-")[[1]][1])
+    Years <- c(Year0, Year0 + 1)
 
+    document <- gsub("YearA", Years[1], document)
+    document <- gsub("YearB", Years[2], document)
+    
     title <- paste0("\\title{\\vspace{-2cm}",
                     "Curso ", curso,
                     " (", tipo, ")",
@@ -66,6 +70,9 @@ calPDF <- function(cal, curso = "2016-2017", tipo = "Grado",
     
     dayTex <- function(x, formato)
     {
+        idx <- (formato != "transparent")
+        x <- x[idx]
+        formato <- formato[idx]
         paste(
             paste0("if (equals=", x, ") ",
                    " [", formato, "]"),
@@ -74,6 +81,10 @@ calPDF <- function(cal, curso = "2016-2017", tipo = "Grado",
 
     seqTex <- function(start, end, formato)
     {
+        idx <- (formato != "transparent")
+        start <- start[idx]
+        end <- end[idx]
+        formato <- formato[idx]
         paste(
             paste0("if (between = ",
                    start, " and ", end, ") [", formato, "]"),
