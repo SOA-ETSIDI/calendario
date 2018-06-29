@@ -21,6 +21,12 @@ header <- fluidRow(
 
 editor <- div(id = 'editor',
               fluidRow(
+                  column(12,
+                         selectInput('curso', "Curso: ",
+                                     choices = cursos,
+                                     selected = cursoActual))
+              ),
+              fluidRow(
                   column(12, 
                          rHandsontableOutput('table'))
               ),
@@ -33,9 +39,16 @@ editor <- div(id = 'editor',
                          )
               ))
 
-pdfUI <- fluidRow(column(12,
-                         htmlOutput("pdfViewer")
+gradoUI <- fluidRow(column(12,
+                         htmlOutput("pdfGrado")
                          ))
+masterUI <- fluidRow(column(12,
+                         htmlOutput("pdfMaster")
+                         ))
+etsidiUI <- fluidRow(column(12,
+                         htmlOutput("pdfETSIDI")
+                         ))
+
 
 ## UI completa
 shinyUI(
@@ -47,7 +60,9 @@ shinyUI(
             column(12,
                    tabsetPanel(
                        tabPanel('Tabla', editor),
-                       tabPanel('Vista', pdfUI)
+                       tabPanel('Grado', gradoUI),
+                       tabPanel('Master', masterUI),
+                       tabPanel('ETSIDI', etsidiUI)
                    ))
             )
     ))

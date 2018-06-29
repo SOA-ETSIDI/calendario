@@ -122,7 +122,7 @@ calPDF <- function(cal, curso = cursoActual, tipo = "Grado",
     old <- setwd(dest)
     f <- paste0("Calendario", "_",
                 tipo, "_",
-                sub('-', '_', curso),
+                curso,
                 "_", formato,
                 '.tex')
     calTex <- paste(preamble,

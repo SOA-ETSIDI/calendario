@@ -3,15 +3,16 @@ library(shiny)
 library(shinyjs)
 
 source('init.R')
-addResourcePath("pdf", tempdir())
+addResourcePath("pdf", "pdf")
 
-cal <- leeCalendario()
-makeCalPDF(cal)
 
 shinyServer(function(input,output,session){
+
     disable("update")
 
     output$table <- renderRHandsontable({
+        cal <- leeCalendario(input$curso)
+
         cal[, Inicio := as.character(Inicio)]
         cal[, Final := as.character(Final)]
         
@@ -25,21 +26,44 @@ shinyServer(function(input,output,session){
         hot
     })
     
-    output$pdfViewer <- renderUI(
+    output$pdfGrado <- renderUI(
     {
         ## Añado enlace reactivo para que actualice contenido del
         ## iframe si actualizo tabla
         refresh <- input$table
         tags$iframe(style="height:600px; width:100%",
-                    src=paste0("pdf/ETSIDI_", cursoActual, 
+                    src=paste0("pdf/Calendario_Grado_",
+                               input$curso, '_v',
                                ".pdf#zoom=page-width"))
     })
+
+    output$pdfMaster <- renderUI(
+    {
+        ## Añado enlace reactivo para que actualice contenido del
+        ## iframe si actualizo tabla
+        refresh <- input$table
+        tags$iframe(style="height:600px; width:100%",
+                    src=paste0("pdf/Calendario_Master_",
+                               input$curso, '_v', 
+                               ".pdf#zoom=page-width"))
+    })
+
+    output$pdfETSIDI <- renderUI(
+    {
+        ## Añado enlace reactivo para que actualice contenido del
+        ## iframe si actualizo tabla
+        refresh <- input$table
+        tags$iframe(style="height:600px; width:100%",
+                    src=paste0("pdf/ETSIDI_", input$curso, 
+                               ".pdf#zoom=page-width"))
+    })
+
     ## Refresco PDF
     observeEvent(input$table,
     {
         enable("update")
         df <- hot_to_r(input$table)
-        try(makeCalPDF(df))
+        try(makeCalPDF(df, input$curso))
     })
 
     ## Grabo datos en csv
@@ -47,7 +71,9 @@ shinyServer(function(input,output,session){
     {
         df <- hot_to_r(input$table)
         write.csv(df,
-                  file = paste0('calendarioETSIDI_', cursoActual, '.csv'),
+                  file = paste0('calendarioETSIDI_',
+                                input$curso,
+                                '.csv'),
                   row.names = FALSE)
         info('Tabla modificada correctamente.')
     })
