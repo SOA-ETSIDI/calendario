@@ -9,11 +9,11 @@ addResourcePath("pdf", tempdir())
 
 ## Cabecera con logos
 header <- fluidRow(
-    column(4, align = 'center', img(src = logoUPM)),
+    column(4, align = 'center', img(src = logoUPM, width = 72)),
     column(4, align = 'center',
            h2("Calendario Académico"),
            h5("Subdirección de Ordenación Académica")),
-    column(4, align = 'center', img(src = logoETSIDI))
+    column(4, align = 'center', img(src = logoETSIDI, width = 72))
 )
 
 editor <- div(id = 'editor',
