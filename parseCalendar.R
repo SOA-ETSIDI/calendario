@@ -16,12 +16,7 @@ lectivo <- function(x, festivos){
     x[isWD(x) & isLab(x)]
 }
 
-calETSIDI <- fread(paste0('calendarioETSIDI_',
-                          cursoActual,
-                          '.csv'),
-                na.strings = "")
-calETSIDI[, Inicio := as.Date(Inicio)]
-calETSIDI[, Final := as.Date(Final)]
+calETSIDI <- leeCalendario()
 
 ## Días festivos
 festivos <- calETSIDI[Formato == 'fiesta']

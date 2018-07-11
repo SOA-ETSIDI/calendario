@@ -1,8 +1,6 @@
 library(openssl)
 library(data.table)
 
-cursoActual <- '2017-2018'
-
 source('../misc/defs.R')
 source('../misc/funciones.R')
 source('parseCalendar.R')
@@ -29,12 +27,14 @@ horG <- horarios[Titulacion %in% grados]
 ## Horas Tuthoras
 tuthora1 <- horG[, .(Asignatura = "Hora Tuthora", Tipo = "Tutoria",
                     Dia = dias,
-                    HoraInicio = "11:15", HoraFinal = "11:45"),
+                    HoraInicio = tuthoraM[1],
+                    HoraFinal = tuthoraM[2]),
                  by = .(Grupo, Titulacion, Semestre)]
 
 tuthora2 <- horG[, .(Asignatura = "Hora Tuthora", Tipo = "Tutoria",
                     Dia = dias,
-                    HoraInicio = "17:15", HoraFinal = "17:45"),
+                    HoraInicio = tuthoraT[1],
+                    HoraFinal = tuthoraT[2]),
                  by = .(Grupo, Titulacion, Semestre)]
 
 horG <- rbind(horG, tuthora1, tuthora2)
