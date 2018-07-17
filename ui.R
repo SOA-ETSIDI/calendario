@@ -18,22 +18,26 @@ header <- fluidRow(
 
 editor <- div(id = 'editor',
               fluidRow(
-                  column(12,
+                  column(6,
                          selectInput('curso', "Curso: ",
                                      choices = cursos,
                                      selected = cursoActual))
               ),
               fluidRow(
-                  column(12, 
-                         rHandsontableOutput('table'))
-              ),
-              br(),
-              fluidRow(
-                  column(12,
+                  column(3,
                          actionButton("update",
                                       "Confirmar",
                                       icon = icon("check"))
-                         )
+                         ),
+                  column(3,
+                         actionButton("publish",
+                                      "Publicar",
+                                      icon = icon("check"))
+                         )),
+              br(),
+              fluidRow(
+                  column(12, 
+                         rHandsontableOutput('table'))
               ))
 
 gradoUI <- fluidRow(column(12,

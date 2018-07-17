@@ -77,6 +77,19 @@ shinyServer(function(input,output,session){
                   row.names = FALSE)
         info('Tabla modificada correctamente.')
     })
-    
+
+    ## Publico PDFs y iCalendar en web
+    observeEvent(input$publish,
+    {
+        ## Vuelca en webdav
+        okPDF <- copyWeb(input$curso)
+        if (okPDF)
+            ## Mensaje para usuario si nada falla
+            info('Calendario PDF publicado.')
+        else
+            info('Error al publicar PDF.')
+        makeICS(input$curso, dest = webdav)
+        info('Calendario ICS publicado.')
+    })
 }) 
 
