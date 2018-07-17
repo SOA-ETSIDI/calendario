@@ -12,7 +12,7 @@ csvs <- dir(path = 'csv')
 filenames <- gsub(pattern = "\\.csv$", "", csvs)
 cursos <- gsub(pattern = "calendarioETSIDI_", "", filenames)
 
-webdav <- '/tmp/'##'/var/www/webdav/cal'
+webdav <- '/var/www/webdav/cal'
 
 
 leeCalendario <- function(curso = cursoActual)

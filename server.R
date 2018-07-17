@@ -11,7 +11,11 @@ shinyServer(function(input,output,session){
     disable("update")
 
     output$table <- renderRHandsontable({
+        ## Lee calendario
         cal <- leeCalendario(input$curso)
+
+        ## Refresco (o genero por primera vez) PDFs al leer calendario
+        makeCalPDF(cal, input$curso)
 
         cal[, Inicio := as.character(Inicio)]
         cal[, Final := as.character(Final)]
@@ -71,7 +75,7 @@ shinyServer(function(input,output,session){
     {
         df <- hot_to_r(input$table)
         write.csv(df,
-                  file = paste0('calendarioETSIDI_',
+                  file = paste0('csv/calendarioETSIDI_',
                                 input$curso,
                                 '.csv'),
                   row.names = FALSE)
