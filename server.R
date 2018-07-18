@@ -14,8 +14,10 @@ shinyServer(function(input,output,session){
         ## Lee calendario
         cal <- leeCalendario(input$curso)
 
-        ## Refresco (o genero por primera vez) PDFs al leer calendario
-        makeCalPDF(cal, input$curso)
+        ## Genero por primera vez PDFs si fuese necesario
+        pdfCurso <- list.files('pdf', pattern = input$curso)
+        if (length(pdfCurso) == 0)
+            makeCalPDF(cal, input$curso)
 
         cal[, Inicio := as.character(Inicio)]
         cal[, Final := as.character(Final)]
