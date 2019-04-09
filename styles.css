@@ -10,3 +10,11 @@ h1, h2, h3, h4, h5, h6 {
 body {
   font-family:"Lato", "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
+
+.shiny-notification {
+    height: 100px;
+    width: 800px;
+    position:fixed;
+    top: calc(50% - 50px);
+    left: calc(50% - 400px);
+}

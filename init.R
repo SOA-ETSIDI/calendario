@@ -31,21 +31,27 @@ leeCalendario <- function(curso = cursoActual)
 makeCalPDF <- function(x, curso = cursoActual)
 {
     formatos <- c('v', 'h')
-    lapply(formatos, function(formato)
+    withProgress(message = "Actualizando PDFs...", 
     {
-        calPDF(x, curso = curso, tipo = 'Grado', formato = formato, dest = 'pdf/')
-        calPDF(x, curso = curso, tipo = 'Master', formato = formato, dest = 'pdf/')
-        ## Genero un PDF con los dos calendarios para mostrarlo en el visor de PDFs
-        pdfs <- paste0('Calendario_',
-                       c('Grado_', 'Master_'),
-                       curso,
-                       "_", formato, ".pdf",
-                       collapse = ' ')
-        old <- setwd('pdf/')
-        system2('pdftk', args = c(pdfs,
-                                  'cat output',
-                                  paste0('ETSIDI_', curso, '.pdf')))
-        setwd(old)
+        lapply(formatos, function(formato)
+        {
+            calPDF(x, curso = curso, tipo = 'Grado', formato = formato, dest = 'pdf/')
+            incProgress(1/6)
+            calPDF(x, curso = curso, tipo = 'Master', formato = formato, dest = 'pdf/')
+            incProgress(1/6)
+            ## Genero un PDF con los dos calendarios para mostrarlo en el visor de PDFs
+            pdfs <- paste0('Calendario_',
+                           c('Grado_', 'Master_'),
+                           curso,
+                           "_", formato, ".pdf",
+                           collapse = ' ')
+            old <- setwd('pdf/')
+            system2('pdftk', args = c(pdfs,
+                                      'cat output',
+                                      paste0('ETSIDI_', curso, '.pdf')))
+            incProgress(1/6)
+            setwd(old)
+            })
     })
 }
 
