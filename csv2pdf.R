@@ -66,7 +66,7 @@ calPDF <- function(cal, curso = cursoActual, tipo = "Grado",
     S1 <- cal[Inicio >= as.Date(paste0(Years[1], '-09-01')) &
               Inicio < fechasS2$Inicio]
     S2 <- cal[Inicio >= fechasS2$Inicio &
-              Inicio <= as.Date(paste0(Years[2], '-07-31'))]
+              Inicio <= as.Date(paste0(Years[2], '-08-31'))]
     
     dayTex <- function(x, formato)
     {

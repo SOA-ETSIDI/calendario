@@ -18,18 +18,25 @@
   if (Sunday) [black!50, font=\itshape, nodes={fill=white}]
   if (Saturday) [black!50];
 \end{tikzpicture}
-\hspace{5pt}\parbox[t]{0.6\textwidth}{
-    \primerSemestre
-}
+\hspace{5pt}
+\begin{minipage}[t][0.9\textheight]{0.6\textwidth}
+  \primerSemestre
 
-\section*{Leyenda}
+  \vspace{\fill}
 
-\leyenda
+  \begin{center}
+    \leyenda
+  \end{center}
+
+\end{minipage}
+
+
+
 
 \clearpage
 
 \noindent\begin{tikzpicture}[baseline=0]
-  \calendar[dates = YearB-01-01 to YearB-07-last,
+  \calendar[dates = YearB-01-01 to YearB-08-last,
   week list,
   month label left,month yshift=12pt,
   month text=\textcolor{black}{\%mt \%y0},
@@ -41,11 +48,16 @@
   if (Sunday) [black!50, font=\itshape, nodes={fill=white}]
   if (Saturday) [black!50];
 \end{tikzpicture}
-\hspace{5pt}\parbox[t]{0.6\textwidth}{
+\hspace{5pt}
+\begin{minipage}[t][0.9\textheight]{0.6\textwidth}
   \segundoSemestre
-}
-\section*{Leyenda}
 
-\leyenda
+  \vspace{\fill}
+
+  \begin{center}
+    \leyenda
+  \end{center}
+
+\end{minipage}
 
 \end{document}
