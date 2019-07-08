@@ -8,16 +8,32 @@ addResourcePath("pdf", "pdf")
 
 shinyServer(function(input,output,session){
 
+    values <- reactiveValues()
+
     disable("update")
 
-    output$table <- renderRHandsontable({
-        ## Lee calendario
+    observeEvent(input$okCurso,
+    {
+        ## Una vez elegido el curso, bloquea el selector para evitar
+        ## conflictos.
+        hide("eligeCurso", anim = TRUE)
+
+        show("tabs", anim = TRUE)
+
+        ## Lee calendario del curso elegido
         cal <- leeCalendario(input$curso)
 
         ## Genero por primera vez PDFs si fuese necesario
         pdfCurso <- list.files('pdf', pattern = input$curso)
         if (length(pdfCurso) == 0)
             makeCalPDF(cal, input$curso)
+        ## Paso resultado a handsontable (ver siguiente funcion)
+        values$cal <- cal 
+    })
+
+    output$table <- renderRHandsontable({
+        ## Recibo tabla leida con eligeCurso (ver funcion anterior)
+        cal <- values$cal
 
         cal[, Inicio := as.character(Inicio)]
         cal[, Final := as.character(Final)]
