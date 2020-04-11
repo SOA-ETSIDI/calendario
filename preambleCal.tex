@@ -37,9 +37,7 @@
 \calendar[dates = #2-#1-01 to #2-#1-last,
 month label above centered,week list,
 month text=\textcolor{black}{\%mt \%y0},
-days={
-    text width=width("00"),
-    align=right}]
+day text = \pgfcalendarshorthand{d}{=}]
 \seqETSIDI
 \oneDayETSIDI
 if (Sunday) [black!50, font=\itshape, nodes={fill=white}]
