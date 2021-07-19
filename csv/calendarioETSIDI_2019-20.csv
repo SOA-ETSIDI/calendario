@@ -53,3 +53,6 @@
 "2020-06-22","2020-07-11","Exámenes extraordinarios",TRUE,"ETSIDI","examen"
 "2020-06-29","2020-07-17","Defensa del TFG",TRUE,"Grado","transparent"
 "2020-06-29","2020-07-10","Defensa del TFM",TRUE,"Master","transparent"
+"2020-07-22","2020-08-04","Matricula resto alumnos de Grado",TRUE,"Grado","matricula"
+"2020-07-22","2020-08-04","Matrícula alumnos de Máster Universitario",TRUE,"Master","matricula"
+"2020-07-31","2020-08-04","Matrícula alumnos nuevo ingreso, acceso por prescrinscripción",TRUE,"Grado","matricula"
