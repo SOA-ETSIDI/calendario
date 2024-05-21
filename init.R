@@ -22,6 +22,7 @@ leeCalendario <- function(curso = cursoActual)
     calETSIDI[, Inicio := as.Date(Inicio)]
     calETSIDI[, Final := as.Date(Final)]
     calETSIDI[is.na(Final), Final := Inicio]
+    calETSIDI[, Lectivo := factor(Lectivo)]
     calETSIDI[, Tipo := factor(Tipo)]
     calETSIDI[, Formato := factor(Formato)]
     setkey(calETSIDI, Inicio)
