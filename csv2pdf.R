@@ -50,11 +50,15 @@ calPDF <- function(cal, curso = cursoActual, tipo = "Grado",
     seqEnd <- "}\n"
 
     S1Header <- paste0("\\newcommand{\\primerSemestre}",
-                       "{\n{\\large\\textsc{Primer Semestre}}\n",
+                       "{\n\\begin{center}\n",
+                       "{\\large\\textsc{Primer Semestre}}\n",
+                       "\\end{center}\n",
                        "\\begin{itemize}\n")
     S1End <- "\n\\end{itemize}}\n"
     S2Header <- paste0("\\newcommand{\\segundoSemestre}",
-                       "{\n{\\large\\textsc{Segundo Semestre}}\n",
+                       "{\n\\begin{center}\n",
+                       "{\\large\\textsc{Segundo Semestre}}\n",
+                       "\\end{center}\n",
                        "\\begin{itemize}\n")
     S2End <- "\n\\end{itemize}}\n"
 
